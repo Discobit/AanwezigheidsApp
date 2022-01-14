@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="enableButton" type="id" />
+    <item name="monitoringText" type="id" />
+    <item name="rangingText" type="id" />
+</resources>

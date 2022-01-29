@@ -25,14 +25,4 @@
         android:text="TextView"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textView_test_aanwezigheid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView_aangemeld_afgemeld"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textSize="20sp" />
-
 </RelativeLayout>

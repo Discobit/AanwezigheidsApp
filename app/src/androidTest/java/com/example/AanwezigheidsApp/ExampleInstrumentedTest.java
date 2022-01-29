@@ -1,4 +1,4 @@
-package com.example.mobiele_aanwezigheidsbord;
+package com.example.AanwezigheidsApp;
 
 import android.content.Context;
 

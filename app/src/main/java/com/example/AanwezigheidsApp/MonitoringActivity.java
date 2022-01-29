@@ -1,4 +1,4 @@
-package com.example.mobiele_aanwezigheidsbord;
+package com.example.AanwezigheidsApp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -17,6 +17,11 @@ import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.Region;
 
+/**
+ *
+ * @author dyoung
+ * @author Matt Tyler
+ */
 public class MonitoringActivity extends Activity implements MonitorNotifier {
     protected static final String TAG = "MonitoringActivity";
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
@@ -30,8 +35,6 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
         verifyBluetooth();
         requestPermissions();
         BeaconManager.getInstanceForApplication(this).addMonitorNotifier(this);
-        // No need to start monitoring here because we already did it in
-        // BeaconReferenceApplication.onCreate
         // check if we are currently inside or outside of that region to update the display
         if (MainActivity.insideRegion) {
             logToDisplay("Beacons are visible.");
@@ -81,12 +84,7 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
                             builder.setTitle("Functionality limited");
                             builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
                             builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                }
-
+                            builder.setOnDismissListener(dialog -> {
                             });
                             builder.show();
                         }
@@ -105,12 +103,7 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
                     builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
+                    builder.setOnDismissListener(dialog -> {
                     });
                     builder.show();
                 }
@@ -133,12 +126,7 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.");
                     builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
+                    builder.setOnDismissListener(dialog -> {
                     });
                     builder.show();
                 }
@@ -152,16 +140,10 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons when in the background.");
                     builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
+                    builder.setOnDismissListener(dialog -> {
                     });
                     builder.show();
                 }
-                return;
             }
         }
     }
@@ -190,12 +172,7 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
                 builder.setTitle("Bluetooth not enabled");
                 builder.setMessage("Please enable bluetooth in settings and restart this application.");
                 builder.setPositiveButton(android.R.string.ok, null);
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finishAffinity();
-                    }
-                });
+                builder.setOnDismissListener(dialog -> finishAffinity());
                 builder.show();
             }
         }
@@ -204,14 +181,7 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
             builder.setTitle("Bluetooth LE not available");
             builder.setMessage("Sorry, this device does not support Bluetooth LE.");
             builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    finishAffinity();
-                }
-
-            });
+            builder.setOnDismissListener(dialog -> finishAffinity());
             builder.show();
 
         }
@@ -221,12 +191,10 @@ public class MonitoringActivity extends Activity implements MonitorNotifier {
     private String cumulativeLog = "";
     private void logToDisplay(String line) {
         cumulativeLog += line+"\n";
-        runOnUiThread(new Runnable() {
-            public void run() {
-                EditText editText = (EditText)MonitoringActivity.this
-                        .findViewById(R.id.monitoringText);
-                editText.setText(cumulativeLog);
-            }
+        runOnUiThread(() -> {
+            EditText editText = (EditText)MonitoringActivity.this
+                    .findViewById(R.id.monitoringText);
+            editText.setText(cumulativeLog);
         });
     }
 
